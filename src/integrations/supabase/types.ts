@@ -14,16 +14,371 @@ export type Database = {
   }
   public: {
     Tables: {
-      [_ in never]: never
+      activities: {
+        Row: {
+          category: string
+          created_at: string
+          created_by: string | null
+          deadline: string | null
+          description: string
+          id: string
+          resource_links: Json
+          title: string
+          updated_at: string
+        }
+        Insert: {
+          category?: string
+          created_at?: string
+          created_by?: string | null
+          deadline?: string | null
+          description?: string
+          id?: string
+          resource_links?: Json
+          title: string
+          updated_at?: string
+        }
+        Update: {
+          category?: string
+          created_at?: string
+          created_by?: string | null
+          deadline?: string | null
+          description?: string
+          id?: string
+          resource_links?: Json
+          title?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      activity_assignments: {
+        Row: {
+          activity_id: string
+          admin_verified: boolean
+          completed_at: string | null
+          created_at: string
+          id: string
+          notes: string | null
+          status: string
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          activity_id: string
+          admin_verified?: boolean
+          completed_at?: string | null
+          created_at?: string
+          id?: string
+          notes?: string | null
+          status?: string
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          activity_id?: string
+          admin_verified?: boolean
+          completed_at?: string | null
+          created_at?: string
+          id?: string
+          notes?: string | null
+          status?: string
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "activity_assignments_activity_id_fkey"
+            columns: ["activity_id"]
+            isOneToOne: false
+            referencedRelation: "activities"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      chat_messages: {
+        Row: {
+          content: string
+          created_at: string
+          id: string
+          user_id: string
+        }
+        Insert: {
+          content: string
+          created_at?: string
+          id?: string
+          user_id: string
+        }
+        Update: {
+          content?: string
+          created_at?: string
+          id?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      gallery_images: {
+        Row: {
+          id: string
+          image_url: string
+          post_id: string
+          sort_order: number
+        }
+        Insert: {
+          id?: string
+          image_url: string
+          post_id: string
+          sort_order?: number
+        }
+        Update: {
+          id?: string
+          image_url?: string
+          post_id?: string
+          sort_order?: number
+        }
+        Relationships: [
+          {
+            foreignKeyName: "gallery_images_post_id_fkey"
+            columns: ["post_id"]
+            isOneToOne: false
+            referencedRelation: "gallery_posts"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      gallery_posts: {
+        Row: {
+          activity_id: string | null
+          caption: string | null
+          created_at: string
+          created_by: string | null
+          event_date: string | null
+          id: string
+          title: string
+        }
+        Insert: {
+          activity_id?: string | null
+          caption?: string | null
+          created_at?: string
+          created_by?: string | null
+          event_date?: string | null
+          id?: string
+          title: string
+        }
+        Update: {
+          activity_id?: string | null
+          caption?: string | null
+          created_at?: string
+          created_by?: string | null
+          event_date?: string | null
+          id?: string
+          title?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "gallery_posts_activity_id_fkey"
+            columns: ["activity_id"]
+            isOneToOne: false
+            referencedRelation: "activities"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      membership_applications: {
+        Row: {
+          created_at: string
+          department: string
+          email: string
+          id: string
+          interests: string[]
+          name: string
+          phone: string
+          reason: string
+          register_no: string
+          status: string
+          year_of_study: string
+        }
+        Insert: {
+          created_at?: string
+          department: string
+          email: string
+          id?: string
+          interests?: string[]
+          name: string
+          phone: string
+          reason?: string
+          register_no: string
+          status?: string
+          year_of_study: string
+        }
+        Update: {
+          created_at?: string
+          department?: string
+          email?: string
+          id?: string
+          interests?: string[]
+          name?: string
+          phone?: string
+          reason?: string
+          register_no?: string
+          status?: string
+          year_of_study?: string
+        }
+        Relationships: []
+      }
+      notifications: {
+        Row: {
+          activity_id: string | null
+          body: string | null
+          created_at: string
+          id: string
+          link: string | null
+          read: boolean
+          title: string
+          user_id: string
+        }
+        Insert: {
+          activity_id?: string | null
+          body?: string | null
+          created_at?: string
+          id?: string
+          link?: string | null
+          read?: boolean
+          title: string
+          user_id: string
+        }
+        Update: {
+          activity_id?: string | null
+          body?: string | null
+          created_at?: string
+          id?: string
+          link?: string | null
+          read?: boolean
+          title?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "notifications_activity_id_fkey"
+            columns: ["activity_id"]
+            isOneToOne: false
+            referencedRelation: "activities"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      profiles: {
+        Row: {
+          avatar_url: string | null
+          college_email: string
+          created_at: string
+          department: string | null
+          full_name: string
+          id: string
+          is_active: boolean
+          member_id: string
+          phone: string | null
+          updated_at: string
+          year_of_study: string | null
+        }
+        Insert: {
+          avatar_url?: string | null
+          college_email?: string
+          created_at?: string
+          department?: string | null
+          full_name?: string
+          id: string
+          is_active?: boolean
+          member_id: string
+          phone?: string | null
+          updated_at?: string
+          year_of_study?: string | null
+        }
+        Update: {
+          avatar_url?: string | null
+          college_email?: string
+          created_at?: string
+          department?: string | null
+          full_name?: string
+          id?: string
+          is_active?: boolean
+          member_id?: string
+          phone?: string | null
+          updated_at?: string
+          year_of_study?: string | null
+        }
+        Relationships: []
+      }
+      site_settings: {
+        Row: {
+          contact_email: string | null
+          global_bg_url: string | null
+          hero_bg_url: string | null
+          hero_subtitle: string | null
+          hero_title: string | null
+          id: number
+          linkedin_url: string | null
+          updated_at: string
+          whatsapp_url: string | null
+        }
+        Insert: {
+          contact_email?: string | null
+          global_bg_url?: string | null
+          hero_bg_url?: string | null
+          hero_subtitle?: string | null
+          hero_title?: string | null
+          id?: number
+          linkedin_url?: string | null
+          updated_at?: string
+          whatsapp_url?: string | null
+        }
+        Update: {
+          contact_email?: string | null
+          global_bg_url?: string | null
+          hero_bg_url?: string | null
+          hero_subtitle?: string | null
+          hero_title?: string | null
+          id?: number
+          linkedin_url?: string | null
+          updated_at?: string
+          whatsapp_url?: string | null
+        }
+        Relationships: []
+      }
+      user_roles: {
+        Row: {
+          created_at: string
+          id: string
+          role: Database["public"]["Enums"]["app_role"]
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          role?: Database["public"]["Enums"]["app_role"]
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          role?: Database["public"]["Enums"]["app_role"]
+          user_id?: string
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
     }
     Functions: {
-      [_ in never]: never
+      has_role: {
+        Args: {
+          _role: Database["public"]["Enums"]["app_role"]
+          _user_id: string
+        }
+        Returns: boolean
+      }
     }
     Enums: {
-      [_ in never]: never
+      app_role: "admin" | "student"
     }
     CompositeTypes: {
       [_ in never]: never
@@ -150,6 +505,8 @@ export type CompositeTypes<
 
 export const Constants = {
   public: {
-    Enums: {},
+    Enums: {
+      app_role: ["admin", "student"],
+    },
   },
 } as const
