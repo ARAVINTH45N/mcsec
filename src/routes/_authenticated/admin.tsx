@@ -13,7 +13,7 @@ export const Route = createFileRoute("/_authenticated/admin")({
   component: AdminLayout,
 });
 
-const tabs = [
+const tabs: Array<{ to: string; label: string; icon: React.ComponentType<{ className?: string }>; exact?: boolean }> = [
   { to: "/admin", label: "Overview", icon: LayoutDashboard, exact: true },
   { to: "/admin/members", label: "Members", icon: Users },
   { to: "/admin/activities", label: "Activities", icon: ListChecks },
@@ -22,7 +22,7 @@ const tabs = [
   { to: "/admin/chat", label: "Chat mod", icon: MessageSquare },
   { to: "/admin/notifications-log", label: "Notif log", icon: Bell },
   { to: "/admin/settings", label: "Settings", icon: Settings },
-] as const;
+];
 
 function AdminLayout() {
   return (
