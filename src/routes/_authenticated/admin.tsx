@@ -32,8 +32,8 @@ function AdminLayout() {
         {tabs.map((t) => (
           <Link
             key={t.to}
-            to={t.to}
-            activeOptions={{ exact: t.exact }}
+            to={t.to as unknown as "/admin"}
+            activeOptions={{ exact: !!t.exact }}
             className="inline-flex items-center gap-2 rounded-lg px-3 py-2 text-sm font-medium text-muted-foreground hover:bg-accent"
             activeProps={{ className: "inline-flex items-center gap-2 rounded-lg px-3 py-2 text-sm font-semibold bg-primary text-primary-foreground" }}
           >
