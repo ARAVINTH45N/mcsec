@@ -8,6 +8,7 @@ import { Label } from "@/components/ui/label";
 import { toast } from "sonner";
 import { Award, Loader2 } from "lucide-react";
 import { useQueryClient } from "@tanstack/react-query";
+import { StorageImage } from "@/components/StorageImage";
 
 export const Route = createFileRoute("/_authenticated/profile")({
   component: ProfilePage,
@@ -40,8 +41,7 @@ function ProfilePage() {
     const path = `${user.id}/avatar-${Date.now()}.${file.name.split(".").pop()}`;
     const { error: upErr } = await supabase.storage.from("avatars").upload(path, file, { upsert: true });
     if (upErr) { setUploading(false); return toast.error(upErr.message); }
-    const { data: pub } = supabase.storage.from("avatars").getPublicUrl(path);
-    const { error } = await supabase.from("profiles").update({ avatar_url: pub.publicUrl }).eq("id", user.id);
+    const { error } = await supabase.from("profiles").update({ avatar_url: path }).eq("id", user.id);
     setUploading(false);
     if (error) return toast.error(error.message);
     qc.invalidateQueries({ queryKey: ["profile", user.id] });
@@ -53,13 +53,17 @@ function ProfilePage() {
       <div className="fluent-card p-6 md:p-8">
         <div className="flex items-center gap-6">
           <div className="relative">
-            {profile.avatar_url ? (
-              <img src={profile.avatar_url} alt="" className="h-24 w-24 rounded-2xl object-cover" />
-            ) : (
-              <div className="grid h-24 w-24 place-items-center rounded-2xl bg-gradient-to-br from-primary to-primary-glow text-3xl font-bold text-primary-foreground">
-                {profile.full_name?.[0]?.toUpperCase() ?? "M"}
-              </div>
-            )}
+            <StorageImage
+              bucket="avatars"
+              value={profile.avatar_url}
+              alt=""
+              className="h-24 w-24 rounded-2xl object-cover"
+              fallback={
+                <div className="grid h-24 w-24 place-items-center rounded-2xl bg-gradient-to-br from-primary to-primary-glow text-3xl font-bold text-primary-foreground">
+                  {profile.full_name?.[0]?.toUpperCase() ?? "M"}
+                </div>
+              }
+            />
             <label className="absolute -bottom-2 right-0 cursor-pointer rounded-full bg-primary px-2 py-1 text-[10px] font-semibold text-primary-foreground shadow-fluent">
               {uploading ? "…" : "Edit"}
               <input type="file" accept="image/*" className="hidden" onChange={handleAvatarUpload} disabled={uploading} />
