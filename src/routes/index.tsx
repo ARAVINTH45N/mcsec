@@ -7,6 +7,7 @@ import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { useStorageUrl } from "@/lib/storage";
 import campusBg from "@/assets/saveetha-campus.jpg.asset.json";
+import { PageBackground } from "@/components/PageBackground";
 
 export const Route = createFileRoute("/")({
   component: Home,
