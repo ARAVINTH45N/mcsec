@@ -40,6 +40,7 @@ function Home() {
 
   return (
     <div>
+      <PageBackground imageUrl={heroImage} imageOpacity={0.12} />
       {/* Hero */}
       <section className="relative overflow-hidden">
         <div
