@@ -40,8 +40,7 @@ function GalleryAdmin() {
       const path = `${post.id}/${Date.now()}-${i}-${f.name}`;
       const { error: e1 } = await supabase.storage.from("gallery").upload(path, f);
       if (e1) return null;
-      const { data: pub } = supabase.storage.from("gallery").getPublicUrl(path);
-      return { post_id: post.id, image_url: pub.publicUrl, sort_order: i };
+      return { post_id: post.id, image_url: path, sort_order: i };
     }));
     const valid = uploads.filter(Boolean) as { post_id: string; image_url: string; sort_order: number }[];
     if (valid.length) await supabase.from("gallery_images").insert(valid);
