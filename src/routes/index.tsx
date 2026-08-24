@@ -46,7 +46,7 @@ function Home() {
           className="absolute inset-0 -z-10"
           style={{
             background: "var(--gradient-hero)",
-            backgroundImage: settings?.hero_bg_url ? `linear-gradient(135deg, oklch(0.15 0.05 260 / 0.9), oklch(0.28 0.09 255 / 0.85)), url(${settings.hero_bg_url})` : undefined,
+            backgroundImage: `linear-gradient(135deg, oklch(0.15 0.05 260 / 0.9), oklch(0.28 0.09 255 / 0.85)), url(${heroImage})`,
             backgroundSize: "cover",
             backgroundPosition: "center",
           }}
