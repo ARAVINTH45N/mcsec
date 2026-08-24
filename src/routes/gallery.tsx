@@ -60,7 +60,7 @@ function GalleryPage() {
             <div key={p.id} className="fluent-card fluent-card-hover mb-4 break-inside-avoid overflow-hidden">
               {p.gallery_images[0] && (
                 <button onClick={() => setLightbox(p.gallery_images[0].image_url)} className="block w-full">
-                  <img src={p.gallery_images[0].image_url} alt={p.title} className="w-full object-cover" />
+                  <StorageImage bucket="gallery" value={p.gallery_images[0].image_url} alt={p.title} className="w-full object-cover" />
                 </button>
               )}
               <div className="p-4">
