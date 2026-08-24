@@ -4,6 +4,8 @@ import { supabase } from "@/integrations/supabase/client";
 import { useState } from "react";
 import { Image as ImageIcon, X } from "lucide-react";
 import { format } from "date-fns";
+import { StorageImage } from "@/components/StorageImage";
+import { useStorageUrl } from "@/lib/storage";
 
 export const Route = createFileRoute("/gallery")({
   component: GalleryPage,
@@ -58,7 +60,7 @@ function GalleryPage() {
             <div key={p.id} className="fluent-card fluent-card-hover mb-4 break-inside-avoid overflow-hidden">
               {p.gallery_images[0] && (
                 <button onClick={() => setLightbox(p.gallery_images[0].image_url)} className="block w-full">
-                  <img src={p.gallery_images[0].image_url} alt={p.title} className="w-full object-cover" />
+                  <StorageImage bucket="gallery" value={p.gallery_images[0].image_url} alt={p.title} className="w-full object-cover" />
                 </button>
               )}
               <div className="p-4">
@@ -69,7 +71,7 @@ function GalleryPage() {
                   <div className="mt-3 grid grid-cols-4 gap-1">
                     {p.gallery_images.slice(1, 5).map((img) => (
                       <button key={img.id} onClick={() => setLightbox(img.image_url)}>
-                        <img src={img.image_url} alt="" className="aspect-square w-full rounded object-cover" />
+                        <StorageImage bucket="gallery" value={img.image_url} alt="" className="aspect-square w-full rounded object-cover" />
                       </button>
                     ))}
                   </div>
@@ -80,12 +82,17 @@ function GalleryPage() {
         </div>
       )}
 
-      {lightbox && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/90 p-4" onClick={() => setLightbox(null)}>
-          <button className="absolute right-4 top-4 rounded-full bg-white/10 p-2 text-white" onClick={() => setLightbox(null)}><X /></button>
-          <img src={lightbox} alt="" className="max-h-[90vh] max-w-full rounded-lg" onClick={(e) => e.stopPropagation()} />
-        </div>
-      )}
+      {lightbox && <Lightbox value={lightbox} onClose={() => setLightbox(null)} />}
+    </div>
+  );
+}
+
+function Lightbox({ value, onClose }: { value: string; onClose: () => void }) {
+  const { data: url } = useStorageUrl("gallery", value);
+  return (
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/90 p-4" onClick={onClose}>
+      <button className="absolute right-4 top-4 rounded-full bg-white/10 p-2 text-white" onClick={onClose}><X /></button>
+      {url && <img src={url} alt="" className="max-h-[90vh] max-w-full rounded-lg" onClick={(e) => e.stopPropagation()} />}
     </div>
   );
 }

@@ -5,6 +5,9 @@ import { MsSquares } from "@/components/Logo";
 import { useSiteSettings } from "@/hooks/useSiteSettings";
 import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
+import { useStorageUrl } from "@/lib/storage";
+import campusBg from "@/assets/saveetha-campus.jpg.asset.json";
+import { PageBackground } from "@/components/PageBackground";
 
 export const Route = createFileRoute("/")({
   component: Home,
@@ -18,11 +21,13 @@ export const Route = createFileRoute("/")({
 
 function Home() {
   const { data: settings } = useSiteSettings();
+  const { data: heroBg } = useStorageUrl("site-assets", settings?.hero_bg_url);
+  const heroImage = heroBg ?? campusBg.url;
   const { data: stats } = useQuery({
     queryKey: ["home_stats"],
     queryFn: async () => {
       const [members, activities, gallery] = await Promise.all([
-        supabase.from("profiles").select("id", { count: "exact", head: true }),
+        supabase.from("member_directory").select("id", { count: "exact", head: true }),
         supabase.from("activities").select("id", { count: "exact", head: true }),
         supabase.from("gallery_posts").select("id", { count: "exact", head: true }),
       ]);
@@ -36,13 +41,14 @@ function Home() {
 
   return (
     <div>
+      <PageBackground imageUrl={heroImage} imageOpacity={0.12} />
       {/* Hero */}
       <section className="relative overflow-hidden">
         <div
           className="absolute inset-0 -z-10"
           style={{
             background: "var(--gradient-hero)",
-            backgroundImage: settings?.hero_bg_url ? `linear-gradient(135deg, oklch(0.15 0.05 260 / 0.9), oklch(0.28 0.09 255 / 0.85)), url(${settings.hero_bg_url})` : undefined,
+            backgroundImage: `linear-gradient(135deg, oklch(0.15 0.05 260 / 0.9), oklch(0.28 0.09 255 / 0.85)), url(${heroImage})`,
             backgroundSize: "cover",
             backgroundPosition: "center",
           }}

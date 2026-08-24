@@ -10,6 +10,7 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from 
 import { toast } from "sonner";
 import { Plus, Trash2 } from "lucide-react";
 import { useSession } from "@/hooks/useAuth";
+import { StorageImage } from "@/components/StorageImage";
 
 export const Route = createFileRoute("/_authenticated/admin/gallery")({
   component: GalleryAdmin,
@@ -40,8 +41,7 @@ function GalleryAdmin() {
       const path = `${post.id}/${Date.now()}-${i}-${f.name}`;
       const { error: e1 } = await supabase.storage.from("gallery").upload(path, f);
       if (e1) return null;
-      const { data: pub } = supabase.storage.from("gallery").getPublicUrl(path);
-      return { post_id: post.id, image_url: pub.publicUrl, sort_order: i };
+      return { post_id: post.id, image_url: path, sort_order: i };
     }));
     const valid = uploads.filter(Boolean) as { post_id: string; image_url: string; sort_order: number }[];
     if (valid.length) await supabase.from("gallery_images").insert(valid);
@@ -82,7 +82,7 @@ function GalleryAdmin() {
       <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
         {posts?.map((p) => (
           <div key={p.id} className="fluent-card overflow-hidden">
-            {p.gallery_images[0] && <img src={p.gallery_images[0].image_url} alt="" className="h-48 w-full object-cover" />}
+            {p.gallery_images[0] && <StorageImage bucket="gallery" value={p.gallery_images[0].image_url} alt="" className="h-48 w-full object-cover" />}
             <div className="p-4">
               <div className="flex items-start justify-between gap-2">
                 <div>
