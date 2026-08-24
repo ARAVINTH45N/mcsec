@@ -182,6 +182,50 @@ export type Database = {
           },
         ]
       }
+      member_directory: {
+        Row: {
+          avatar_url: string | null
+          created_at: string
+          department: string | null
+          full_name: string
+          id: string
+          is_active: boolean
+          member_id: string
+          updated_at: string
+          year_of_study: string | null
+        }
+        Insert: {
+          avatar_url?: string | null
+          created_at?: string
+          department?: string | null
+          full_name?: string
+          id: string
+          is_active?: boolean
+          member_id?: string
+          updated_at?: string
+          year_of_study?: string | null
+        }
+        Update: {
+          avatar_url?: string | null
+          created_at?: string
+          department?: string | null
+          full_name?: string
+          id?: string
+          is_active?: boolean
+          member_id?: string
+          updated_at?: string
+          year_of_study?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "member_directory_id_fkey"
+            columns: ["id"]
+            isOneToOne: true
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       membership_applications: {
         Row: {
           created_at: string
