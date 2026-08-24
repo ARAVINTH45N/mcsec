@@ -82,12 +82,17 @@ function GalleryPage() {
         </div>
       )}
 
-      {lightbox && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/90 p-4" onClick={() => setLightbox(null)}>
-          <button className="absolute right-4 top-4 rounded-full bg-white/10 p-2 text-white" onClick={() => setLightbox(null)}><X /></button>
-          <img src={lightbox} alt="" className="max-h-[90vh] max-w-full rounded-lg" onClick={(e) => e.stopPropagation()} />
-        </div>
-      )}
+      {lightbox && <Lightbox value={lightbox} onClose={() => setLightbox(null)} />}
+    </div>
+  );
+}
+
+function Lightbox({ value, onClose }: { value: string; onClose: () => void }) {
+  const { data: url } = useStorageUrl("gallery", value);
+  return (
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/90 p-4" onClick={onClose}>
+      <button className="absolute right-4 top-4 rounded-full bg-white/10 p-2 text-white" onClick={onClose}><X /></button>
+      {url && <img src={url} alt="" className="max-h-[90vh] max-w-full rounded-lg" onClick={(e) => e.stopPropagation()} />}
     </div>
   );
 }
