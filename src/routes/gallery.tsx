@@ -71,7 +71,7 @@ function GalleryPage() {
                   <div className="mt-3 grid grid-cols-4 gap-1">
                     {p.gallery_images.slice(1, 5).map((img) => (
                       <button key={img.id} onClick={() => setLightbox(img.image_url)}>
-                        <img src={img.image_url} alt="" className="aspect-square w-full rounded object-cover" />
+                        <StorageImage bucket="gallery" value={img.image_url} alt="" className="aspect-square w-full rounded object-cover" />
                       </button>
                     ))}
                   </div>
