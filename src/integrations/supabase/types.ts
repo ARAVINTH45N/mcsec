@@ -366,7 +366,39 @@ export type Database = {
       }
     }
     Views: {
-      [_ in never]: never
+      member_directory: {
+        Row: {
+          avatar_url: string | null
+          created_at: string | null
+          department: string | null
+          full_name: string | null
+          id: string | null
+          is_active: boolean | null
+          member_id: string | null
+          year_of_study: string | null
+        }
+        Insert: {
+          avatar_url?: string | null
+          created_at?: string | null
+          department?: string | null
+          full_name?: string | null
+          id?: string | null
+          is_active?: boolean | null
+          member_id?: string | null
+          year_of_study?: string | null
+        }
+        Update: {
+          avatar_url?: string | null
+          created_at?: string | null
+          department?: string | null
+          full_name?: string | null
+          id?: string | null
+          is_active?: boolean | null
+          member_id?: string | null
+          year_of_study?: string | null
+        }
+        Relationships: []
+      }
     }
     Functions: {
       has_role: {
