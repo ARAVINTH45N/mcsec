@@ -4,6 +4,8 @@ import { supabase } from "@/integrations/supabase/client";
 import { useState } from "react";
 import { Image as ImageIcon, X } from "lucide-react";
 import { format } from "date-fns";
+import { StorageImage } from "@/components/StorageImage";
+import { useStorageUrl } from "@/lib/storage";
 
 export const Route = createFileRoute("/gallery")({
   component: GalleryPage,
