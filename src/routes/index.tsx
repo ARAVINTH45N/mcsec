@@ -44,7 +44,7 @@ function Home() {
       {/* Hero */}
       <section className="relative overflow-hidden">
         <div
-          className="absolute inset-0 -z-10"
+          className="absolute inset-0 z-0"
           style={{
             background: "var(--gradient-hero)",
             backgroundImage: `linear-gradient(135deg, oklch(0.15 0.05 260 / 0.9), oklch(0.28 0.09 255 / 0.85)), url(${heroImage})`,
@@ -52,7 +52,7 @@ function Home() {
             backgroundPosition: "center",
           }}
         />
-        <div className="mx-auto grid max-w-7xl gap-12 px-4 py-24 text-navy-foreground md:grid-cols-2 md:px-6 md:py-32">
+        <div className="relative z-10 mx-auto grid max-w-7xl gap-12 px-4 py-24 text-navy-foreground md:grid-cols-2 md:px-6 md:py-32">
           <div className="flex flex-col justify-center">
             <div className="inline-flex w-fit items-center gap-2 rounded-full border border-white/20 bg-white/10 px-3 py-1 text-xs backdrop-blur">
               <MsSquares className="h-3 w-3" />
