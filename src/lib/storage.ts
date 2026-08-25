@@ -11,11 +11,21 @@ const ONE_WEEK = 60 * 60 * 24 * 7;
  */
 export async function resolveStorageUrl(bucket: Bucket, value?: string | null): Promise<string | null> {
   if (!value) return null;
-  if (/^(https?:|data:|\/)/.test(value)) return value;
-  const { data, error } = await supabase.storage.from(bucket).createSignedUrl(value, ONE_WEEK);
+
+  let path = value;
+  // Legacy rows may hold absolute public URLs from when buckets were public.
+  const publicMatch = value.match(/\/storage\/v1\/object\/(?:public|sign)\/([^/]+)\/(.+?)(?:\?|$)/);
+  if (publicMatch) {
+    path = decodeURIComponent(publicMatch[2]);
+  } else if (/^(https?:|data:|\/)/.test(value)) {
+    return value;
+  }
+
+  const { data, error } = await supabase.storage.from(bucket).createSignedUrl(path, ONE_WEEK);
   if (error) return null;
   return data?.signedUrl ?? null;
 }
+
 
 export function useStorageUrl(bucket: Bucket, value?: string | null) {
   return useQuery({
