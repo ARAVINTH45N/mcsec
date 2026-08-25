@@ -35,8 +35,7 @@ function SettingsAdmin() {
     const path = `bg/${kind}-${Date.now()}-${file.name}`;
     const { error } = await supabase.storage.from("site-assets").upload(path, file, { upsert: true });
     if (error) return toast.error(error.message);
-    const { data: pub } = supabase.storage.from("site-assets").getPublicUrl(path);
-    setForm({ ...form, [kind]: pub.publicUrl });
+    setForm({ ...form, [kind]: path });
     toast.success("Uploaded — save to apply");
   };
 
