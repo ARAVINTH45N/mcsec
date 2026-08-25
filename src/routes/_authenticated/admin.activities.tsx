@@ -35,7 +35,7 @@ function ActivitiesAdmin() {
 
   const { data: profiles = [] } = useQuery({
     queryKey: ["all_profiles_list"],
-    queryFn: async () => (await supabase.from("profiles").select("id, full_name, member_id")).data ?? [],
+    queryFn: async () => (await supabase.from("member_directory").select("id, full_name, member_id")).data ?? [],
   });
 
   const create = async () => {
