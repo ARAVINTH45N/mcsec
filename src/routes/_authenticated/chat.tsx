@@ -37,13 +37,24 @@ function ChatPage() {
     },
   });
 
-  const { data: messages = [] } = useQuery({
+  const { data: directory = {} } = useQuery({
+    queryKey: ["member_directory_map"],
+    queryFn: async () => {
+      const { data } = await supabase.from("member_directory").select("id, full_name, member_id, avatar_url");
+      return Object.fromEntries((data ?? []).map((m) => [m.id, m])) as Record<
+        string,
+        { full_name: string; member_id: string; avatar_url: string | null }
+      >;
+    },
+  });
+
+  const { data: rawMessages = [] } = useQuery({
     queryKey: ["chat_messages"],
     queryFn: async () => {
       const sevenDaysAgo = new Date(Date.now() - 7 * 24 * 60 * 60 * 1000).toISOString();
       const { data, error } = await supabase
         .from("chat_messages")
-        .select("id, content, created_at, user_id, profiles(full_name, member_id, avatar_url)")
+        .select("id, content, created_at, user_id")
         .gte("created_at", sevenDaysAgo)
         .order("created_at", { ascending: true })
         .limit(500);
@@ -51,6 +62,8 @@ function ChatPage() {
       return data as unknown as Msg[];
     },
   });
+
+  const messages: Msg[] = rawMessages.map((m) => ({ ...m, profiles: directory[m.user_id] ?? null }));
 
   useEffect(() => {
     const channel = supabase

@@ -1,4 +1,5 @@
 import { useSiteSettings } from "@/hooks/useSiteSettings";
+import { useStorageUrl } from "@/lib/storage";
 
 interface PageBackgroundProps {
   imageUrl?: string | null;
@@ -10,7 +11,8 @@ interface PageBackgroundProps {
 
 export function PageBackground({ imageUrl, imageOpacity = 0.13, variant = "default" }: PageBackgroundProps) {
   const { data: settings } = useSiteSettings();
-  const bg = imageUrl ?? settings?.global_bg_url ?? null;
+  const { data: globalBg } = useStorageUrl("site-assets", settings?.global_bg_url);
+  const bg = imageUrl ?? globalBg ?? null;
 
   const overlay =
     variant === "hero"
