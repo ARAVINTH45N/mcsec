@@ -8,6 +8,7 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
 import { toast } from "sonner";
+import { StorageImage } from "@/components/StorageImage";
 
 export const Route = createFileRoute("/_authenticated/admin/settings")({
   component: SettingsAdmin,
@@ -63,12 +64,12 @@ function SettingsAdmin() {
         <div>
           <Label>Hero background image</Label>
           <Input type="file" accept="image/*" onChange={(e) => e.target.files?.[0] && uploadBg("hero_bg_url", e.target.files[0])} />
-          {form.hero_bg_url && <img src={form.hero_bg_url} alt="" className="mt-2 h-24 rounded-md object-cover" />}
+          {form.hero_bg_url && <StorageImage bucket="site-assets" value={form.hero_bg_url} alt="" className="mt-2 h-24 rounded-md object-cover" />}
         </div>
         <div>
           <Label>Global background image</Label>
           <Input type="file" accept="image/*" onChange={(e) => e.target.files?.[0] && uploadBg("global_bg_url", e.target.files[0])} />
-          {form.global_bg_url && <img src={form.global_bg_url} alt="" className="mt-2 h-24 rounded-md object-cover" />}
+          {form.global_bg_url && <StorageImage bucket="site-assets" value={form.global_bg_url} alt="" className="mt-2 h-24 rounded-md object-cover" />}
         </div>
       </div>
       <Button type="submit" disabled={saving}>{saving ? "Saving…" : "Save settings"}</Button>
